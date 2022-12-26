@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import loupe from '../../utils/loupe.svg';
 import {
   SearchbarWrapper,
@@ -9,25 +10,29 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-const INITIAL_DATA = { data: '' };
-
 export class Searchbar extends Component {
-  state = INITIAL_DATA;
+  state = { imageName: '' };
 
   handleChangeInput = evt => {
-    this.setState({ data: evt.currentTarget.value });
+    this.setState({ imageName: evt.currentTarget.value.toLowerCase() });
   };
 
   handleSubmitForm = evt => {
+    const { imageName } = this.state;
+
     evt.preventDefault();
-    this.props.dataPictures({ ...this.state });
+    if (imageName.trim() === '' || imageName.length < 3) {
+      toast.error('Searching must be no empty and more than 2 letters');
+      this.resetForm();
+      return;
+    }
+    this.props.onSubmit(imageName);
     this.resetForm();
   };
 
-  resetForm = () => this.setState(INITIAL_DATA);
+  resetForm = () => this.setState({ imageName: '' });
 
   render() {
-    const { data } = this.state;
     return (
       <SearchbarWrapper>
         <SearchForm onSubmit={this.handleSubmitForm}>
@@ -42,7 +47,7 @@ export class Searchbar extends Component {
             autocomplete="off"
             autoFocus
             placeholder="Search images and photos..."
-            value={data}
+            value={this.state.imageName}
             onChange={this.handleChangeInput}
           />
         </SearchForm>
