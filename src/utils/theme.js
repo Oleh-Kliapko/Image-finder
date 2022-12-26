@@ -7,8 +7,8 @@ export const theme = {
   },
 
   typography: {
-    main: '20px',
-    secondary: '18px',
+    main: '24px',
+    secondary: '20px',
   },
 
   sizes: [0, 1, 2, 4, 8, 12, 16, 24, 48, 64],
