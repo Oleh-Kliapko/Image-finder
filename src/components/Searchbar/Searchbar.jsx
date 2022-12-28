@@ -22,7 +22,7 @@ export class Searchbar extends Component {
 
     evt.preventDefault();
     if (imageName.trim() === '' || imageName.length < 3) {
-      toast.error('Searching must be no empty and more than 2 letters');
+      toast.warn('Searching must be no empty and more than 2 letters');
       this.resetForm();
       return;
     }

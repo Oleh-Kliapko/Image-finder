@@ -5,10 +5,10 @@ const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '31235804-68392d2c82bd431c260e5e919';
 const PER_PAGE = 12;
 
-const getImages = async (value, page = 1) => {
+const getImages = async (imageName, page = 1) => {
   const options = {
     params: {
-      q: value,
+      q: imageName,
       page: page,
       per_page: PER_PAGE,
       image_type: 'photo',
@@ -26,7 +26,9 @@ const getImages = async (value, page = 1) => {
   if (status !== 200 || totalHits === 0) {
     return Promise.reject(
       new Error(
-        toast.error(`Sorry, there are no images "${value}". Please try again.`)
+        toast.error(
+          `Sorry, there are no images "${imageName}". Please try again.`
+        )
       )
     );
   }

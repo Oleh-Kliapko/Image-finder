@@ -8,12 +8,13 @@ export const Button = styled.button`
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
   display: inline-block;
+  margin: auto;
   color: #fff;
   border: ${theme.borders[0]};
   text-decoration: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: ${theme.typography.secondary}px;
+  font-size: ${theme.typography.secondary};
   line-height: ${theme.sizes[7]}px;
   font-style: normal;
   font-weight: 500;
