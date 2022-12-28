@@ -14,6 +14,7 @@ export class App extends Component {
     images: [],
     loading: false,
     visibleBtn: false,
+    largeImg: '',
   };
 
   onSearchImages = async imageName => {
@@ -34,6 +35,10 @@ export class App extends Component {
     }
   };
 
+  onSelectedImage = link => {
+    this.setState({ largeImg: link });
+  };
+
   render() {
     const { images, loading, visibleBtn } = this.state;
 
@@ -41,7 +46,7 @@ export class App extends Component {
       <AppWrapper>
         <Searchbar onSubmit={this.onSearchImages} />
         {loading && <Loader />}
-        <ImageGallery images={images} />
+        <ImageGallery images={images} onSelected={this.onSelectedImage} />
         {visibleBtn && <ButtonLoadMore />}
         <ToastContainer autoClose={3000} />
       </AppWrapper>

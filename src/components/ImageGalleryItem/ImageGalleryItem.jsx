@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
-export const Item = ({ webformatURL, tags }) => {
+export const Item = ({ webformatURL, largeImageURL, tags, onSelected }) => {
   return (
     <GalleryItem>
-      <GalleryImage src={webformatURL} alt={tags} />
+      <GalleryImage
+        src={webformatURL}
+        alt={tags}
+        onClick={() => onSelected(largeImageURL)}
+      />
     </GalleryItem>
   );
 };
