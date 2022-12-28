@@ -7,6 +7,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { API } from '../services/api';
 import { Loader } from './Loader/Loader';
 import { ButtonLoadMore } from './ButtonLoadMore/ButtonLoadMore';
+import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -15,6 +16,7 @@ export class App extends Component {
     loading: false,
     visibleBtn: false,
     largeImg: '',
+    tags: '',
   };
 
   onSearchImages = async imageName => {
@@ -35,12 +37,12 @@ export class App extends Component {
     }
   };
 
-  onSelectedImage = link => {
-    this.setState({ largeImg: link });
+  onSelectedImage = ({ largeImageURL, tags }) => {
+    this.setState({ largeImg: largeImageURL, tags });
   };
 
   render() {
-    const { images, loading, visibleBtn } = this.state;
+    const { images, loading, visibleBtn, largeImg, tags } = this.state;
 
     return (
       <AppWrapper>
@@ -48,6 +50,7 @@ export class App extends Component {
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
         {visibleBtn && <ButtonLoadMore />}
+        {largeImg && <Modal largeImg={largeImg} tags={tags} />}
         <ToastContainer autoClose={3000} />
       </AppWrapper>
     );

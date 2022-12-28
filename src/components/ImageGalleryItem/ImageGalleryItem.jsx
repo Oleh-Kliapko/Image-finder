@@ -8,7 +8,7 @@ export const Item = ({ webformatURL, largeImageURL, tags, onSelected }) => {
       <GalleryImage
         src={webformatURL}
         alt={tags}
-        onClick={() => onSelected(largeImageURL)}
+        onClick={() => onSelected({ largeImageURL, tags })}
       />
     </GalleryItem>
   );
