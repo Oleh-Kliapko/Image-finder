@@ -2,8 +2,9 @@
 
 1. npm i @emotion/styled @emotion/react
 2. npm i prop-types
-3. npm i notiflix
-4. npm i nanoid
+3. npm i react-toastify
+4. npm i notiflix
+5. npm i nanoid
 
 Этот проект был создан при помощи
 [Create React App](https://github.com/facebook/create-react-app). Для знакомства

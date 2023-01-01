@@ -17,21 +17,30 @@ export class App extends Component {
     visibleBtn: false,
     largeImg: '',
     tags: '',
+    page: 1,
   };
 
-  onSearchImages = async imageName => {
-    if (imageName !== this.state.imageName) {
+  onSearchImages = async value => {
+    const { imageName, page } = this.state;
+
+    if (value !== imageName) {
       this.setState({ loading: true });
-      const images = await API.getImages(imageName)
+      const images = await API.getImages(value, page)
         .catch(
           this.setState({
             imageName: '',
             images: [],
             visibleBtn: false,
+            page: 1,
           })
         )
         .finally(() => this.setState({ loading: false }));
-      this.setState({ imageName, images, loading: false, visibleBtn: true });
+      this.setState({
+        imageName: value,
+        images,
+        loading: false,
+        visibleBtn: true,
+      });
     } else {
       toast.warn('The new search must be different from the current search');
     }
@@ -39,6 +48,17 @@ export class App extends Component {
 
   onSelectedImage = ({ largeImageURL, tags }) => {
     this.setState({ largeImg: largeImageURL, tags });
+  };
+
+  onCloseByClick = evt => {
+    const clickBackdrop = evt.target.id;
+    if (clickBackdrop === 'backdrop') {
+      this.setState({ largeImg: '' });
+    }
+  };
+
+  onCloseByEscape = () => {
+    this.setState({ largeImg: '' });
   };
 
   render() {
@@ -50,7 +70,14 @@ export class App extends Component {
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
         {visibleBtn && <ButtonLoadMore />}
-        {largeImg && <Modal largeImg={largeImg} tags={tags} />}
+        {largeImg && (
+          <Modal
+            largeImg={largeImg}
+            tags={tags}
+            onCloseByClick={this.onCloseByClick}
+            onCloseByEscape={this.onCloseByEscape}
+          />
+        )}
         <ToastContainer autoClose={3000} />
       </AppWrapper>
     );

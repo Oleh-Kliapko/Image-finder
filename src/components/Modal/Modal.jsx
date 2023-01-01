@@ -1,12 +1,33 @@
-import React from 'react';
-import { Overlay, ModalWrapper } from './Modal.styled';
+import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
+import { Backdrop, ModalWrapper } from './Modal.styled';
 
-export const Modal = ({ largeImg, tags }) => {
-  return (
-    <Overlay>
-      <ModalWrapper>
-        <img src={largeImg} alt={tags} />
-      </ModalWrapper>
-    </Overlay>
-  );
-};
+const modalRoot = document.querySelector('#modal-root');
+
+export class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = evt => {
+    if (evt.code === 'Escape') {
+      this.props.onCloseByEscape();
+    }
+  };
+
+  render() {
+    const { largeImg, tags, onCloseByClick } = this.props;
+    return createPortal(
+      <Backdrop id="backdrop" onClick={onCloseByClick}>
+        <ModalWrapper>
+          <img src={largeImg} alt={tags} />
+        </ModalWrapper>
+      </Backdrop>,
+      modalRoot
+    );
+  }
+}
