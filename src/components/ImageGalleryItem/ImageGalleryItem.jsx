@@ -17,4 +17,6 @@ export const Item = ({ webformatURL, largeImageURL, tags, onSelected }) => {
 Item.propTypes = {
   tags: PropTypes.string.isRequired,
   webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  onSelected: PropTypes.func,
 };

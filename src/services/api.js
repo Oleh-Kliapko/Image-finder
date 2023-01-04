@@ -3,14 +3,13 @@ import { toast } from 'react-toastify';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '31235804-68392d2c82bd431c260e5e919';
-const PER_PAGE = 12;
 
-const getImages = async (value, page = 1) => {
+const getImages = async (value, page = 1, perPage = 12) => {
   const options = {
     params: {
       q: value,
       page: page,
-      per_page: PER_PAGE,
+      per_page: perPage,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
@@ -18,19 +17,15 @@ const getImages = async (value, page = 1) => {
     },
   };
 
-  const {
-    data: { hits, totalHits },
-    status,
-  } = await axios.get(`${BASE_URL}`, options);
+  const { data, status } = await axios.get(`${BASE_URL}`, options);
 
-  if (status !== 200 || totalHits === 0) {
-    return Promise.reject(
-      new Error(
-        toast.error(`Sorry, there are no images "${value}". Please try again.`)
-      )
+  if (status !== 200 || data.totalHits === 0) {
+    // return Promise.reject(
+    throw new Error(
+      toast.error(`Sorry, there are no images "${value}". Please try again.`)
     );
-  }
-  return hits;
+    // );
+  } else return data;
 };
 
 export const API = {

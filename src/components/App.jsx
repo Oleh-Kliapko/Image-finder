@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppWrapper } from './App.slyled';
@@ -10,6 +11,8 @@ import { ButtonLoadMore } from './ButtonLoadMore/ButtonLoadMore';
 import { Modal } from './Modal/Modal';
 
 export class App extends Component {
+  static defaultProps = { PER_PAGE: 12 };
+
   state = {
     imageName: '',
     images: [],
@@ -18,32 +21,59 @@ export class App extends Component {
     largeImg: '',
     tags: '',
     page: 1,
+    totalPages: 0,
   };
 
-  onSearchImages = async value => {
+  async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
+    const { PER_PAGE } = this.props;
 
-    if (value !== imageName) {
+    if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
-      const images = await API.getImages(value, page)
-        .catch(
-          this.setState({
-            imageName: '',
-            images: [],
-            visibleBtn: false,
-            page: 1,
-          })
-        )
-        .finally(() => this.setState({ loading: false }));
+
+      const data = await API.getImages(imageName, page, PER_PAGE).finally(() =>
+        this.setState({ loading: false })
+      );
+
+      const { hits, totalHits } = data;
+      const restImages = totalHits - hits.length * page;
+
+      if (page > 1) {
+        this.setState(({ images }) => ({
+          images: [...images, ...hits],
+        }));
+      } else {
+        this.setState({ images: hits });
+        toast.success(`Hooray! We found ${totalHits} images`);
+        window.scroll(0, 0);
+      }
+
+      if (restImages > 0) {
+        this.setState({ visibleBtn: true });
+      } else {
+        this.setState({ visibleBtn: false });
+        toast.info(
+          `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
+        );
+      }
+
+      this.setState({ totalPages: Math.ceil(totalHits / PER_PAGE) });
+    }
+  }
+
+  onSubmitForm = value => {
+    if (value !== this.state.imageName) {
       this.setState({
         imageName: value,
-        images,
-        loading: false,
-        visibleBtn: true,
+        page: 1,
       });
     } else {
       toast.warn('The new search must be different from the current search');
     }
+  };
+
+  onLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
   onSelectedImage = ({ largeImageURL, tags }) => {
@@ -62,14 +92,21 @@ export class App extends Component {
   };
 
   render() {
-    const { images, loading, visibleBtn, largeImg, tags } = this.state;
+    const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
+      this.state;
 
     return (
       <AppWrapper>
-        <Searchbar onSubmit={this.onSearchImages} />
+        <Searchbar onSubmit={this.onSubmitForm} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
-        {visibleBtn && <ButtonLoadMore />}
+        {visibleBtn && (
+          <ButtonLoadMore
+            onLoadMore={this.onLoadMore}
+            page={page}
+            totalPages={totalPages}
+          />
+        )}
         {largeImg && (
           <Modal
             largeImg={largeImg}
@@ -83,3 +120,7 @@ export class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  PER_PAGE: PropTypes.number.isRequired,
+};

@@ -26,3 +26,9 @@ export const Button = styled.button`
     background-color: ${theme.colors.hover};
   }
 `;
+
+export const CounterPages = styled.span`
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 300;
+`;
