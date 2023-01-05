@@ -35,9 +35,9 @@ export class App extends Component {
         this.setState({ loading: false })
       );
 
-      const { hits, totalHits } = data;
-      const restImages = totalHits - hits.length * page;
+      this.setState({ visibleBtn: true });
 
+      const { hits, totalHits } = data;
       if (page > 1) {
         this.setState(({ images }) => ({
           images: [...images, ...hits],
@@ -48,16 +48,15 @@ export class App extends Component {
         window.scroll(0, 0);
       }
 
-      if (restImages > 0) {
-        this.setState({ visibleBtn: true });
-      } else {
+      const countPages = Math.ceil(totalHits / PER_PAGE);
+      this.setState({ totalPages: countPages });
+
+      if (page >= countPages) {
         this.setState({ visibleBtn: false });
         toast.info(
           `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
         );
       }
-
-      this.setState({ totalPages: Math.ceil(totalHits / PER_PAGE) });
     }
   }
 
@@ -66,6 +65,7 @@ export class App extends Component {
       this.setState({
         imageName: value,
         page: 1,
+        visibleBtn: true,
       });
     } else {
       toast.warn('The new search must be different from the current search');
