@@ -35,9 +35,12 @@ export class App extends Component {
         this.setState({ loading: false })
       );
 
-      this.setState({ visibleBtn: true });
-
       const { hits, totalHits } = data;
+
+      if (totalHits !== 0) {
+        this.setState({ visibleBtn: true });
+      }
+
       if (page > 1) {
         this.setState(({ images }) => ({
           images: [...images, ...hits],
@@ -64,8 +67,10 @@ export class App extends Component {
     if (value !== this.state.imageName) {
       this.setState({
         imageName: value,
+        images: [],
+        visibleBtn: false,
         page: 1,
-        visibleBtn: true,
+        totalPages: 0,
       });
     } else {
       toast.warn('The new search must be different from the current search');
