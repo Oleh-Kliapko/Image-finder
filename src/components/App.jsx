@@ -37,18 +37,17 @@ export class App extends Component {
 
       const { hits, totalHits } = data;
 
-      if (totalHits !== 0) {
-        this.setState({ visibleBtn: true });
-      }
+      this.setState(({ images }) => ({
+        images: [...images, ...hits],
+      }));
 
-      if (page > 1) {
-        this.setState(({ images }) => ({
-          images: [...images, ...hits],
-        }));
-      } else {
-        this.setState({ images: hits });
+      if (page === 1) {
         toast.success(`Hooray! We found ${totalHits} images`);
         window.scroll(0, 0);
+      }
+
+      if (totalHits !== 0) {
+        this.setState({ visibleBtn: true });
       }
 
       const countPages = Math.ceil(totalHits / PER_PAGE);

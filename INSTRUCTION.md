@@ -3,8 +3,9 @@
 1. npm i @emotion/styled @emotion/react
 2. npm i prop-types
 3. npm i react-toastify
-4. npm i notiflix
-5. npm i nanoid
+4. npm i nanoid
+5. npm i eslint-plugin-react-hooks and then extend the recommended eslint
+   config: {"extends": [ // ... "plugin:react-hooks/recommended"]}
 
 Этот проект был создан при помощи
 [Create React App](https://github.com/facebook/create-react-app). Для знакомства
