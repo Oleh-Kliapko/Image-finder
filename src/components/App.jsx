@@ -27,6 +27,10 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
     const { PER_PAGE } = this.props;
+    console.log(
+      '🚀 ~ file: App.jsx:30 ~ App ~ componentDidUpdate ~ PER_PAGE:',
+      PER_PAGE
+    );
 
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
@@ -104,8 +108,9 @@ export class App extends Component {
         <Searchbar onSubmit={this.onSubmitForm} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
-        {visibleBtn && (
+        {visibleBtn && !loading && (
           <ButtonLoadMore
+            loading={loading}
             onLoadMore={this.onLoadMore}
             page={page}
             totalPages={totalPages}
