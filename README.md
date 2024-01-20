@@ -1,3 +1,3 @@
-# Goit-react-hw-03-image-finder
+# Search all photos and pictures in one place
 
-Homework #3 - Image-finder
+More then 1 000 000 000 images in one app
