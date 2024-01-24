@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-03-image-finder",
+  "name": "Image-finder",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Oleh-Kliapko.github.io/goit-react-hw-03-image-finder/",
+  "homepage": "https://Oleh-Kliapko.github.io/Image-finder/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",

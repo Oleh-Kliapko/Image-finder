@@ -27,10 +27,6 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
     const { PER_PAGE } = this.props;
-    console.log(
-      '🚀 ~ file: App.jsx:30 ~ App ~ componentDidUpdate ~ PER_PAGE:',
-      PER_PAGE
-    );
 
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
